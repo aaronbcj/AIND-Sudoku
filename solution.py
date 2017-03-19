@@ -40,6 +40,8 @@ def assign_value(values, box, value):
  
 
 def naked_twin_strategy(values, unitboxes, twinboxes, tofind):
+    # given 2 twins, find & replace those digits among other boxes in same unit
+
     #for box in unitboxes if len(values[box]) > 1 and box not in twinboxes:
     for box in unitboxes:
         if len(values[box]) > 1:
@@ -53,6 +55,8 @@ def naked_twin_strategy(values, unitboxes, twinboxes, tofind):
     return values
 
 def get_twinboxes(values, unitboxes, firstbox):
+    # given a 2 digit box [firstbox], find if there is a twin, if so return both twins
+
     twins = [firstbox]
     val = values[firstbox]
     #for box in unitboxes if firstbox != box and values[box] == val:
