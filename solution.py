@@ -10,14 +10,12 @@ def cross(A, B):
     return [s+t for s in A for t in B]
 
 boxes = cross(rows, cols)
-
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 diag_units = [[a[0]+a[1] for a in zip(rows, cols)] , [a[0]+a[1] for a in zip(rows, cols[::-1])]]
 #print(diag_units)
 unitlist = row_units + column_units + square_units + diag_units
-
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
 
@@ -40,8 +38,9 @@ def assign_value(values, box, value):
  
 
 def naked_twin_strategy(values, unitboxes, twinboxes, tofind):
-    # given 2 twins, find & replace those digits among other boxes in same unit
-
+    """
+    For the given digits in twins, find & replace those digits among other boxes in same unit
+    """
     #for box in unitboxes if len(values[box]) > 1 and box not in twinboxes:
     for box in unitboxes:
         if len(values[box]) > 1:
@@ -55,8 +54,16 @@ def naked_twin_strategy(values, unitboxes, twinboxes, tofind):
     return values
 
 def get_twinboxes(values, unitboxes, firstbox):
-    # given a 2 digit box [firstbox], find if there is a twin, if so return both twins
+    """
+    This function finds the secondbox (twin) of firstbox having the same vaule and if found, then returns them both
+    Args:
+        values(dict): a dictionary of the form {'box_name': '123456789', ...}
+        unitboxes: a list of boxes within the same uit as that of firstbox
+        firstbox: This is a 2-digit box, for which we wish to find a twin.
 
+    Returns:
+        the list with twins or empty (f no twin found).
+    """
     twins = [firstbox]
     val = values[firstbox]
     #for box in unitboxes if firstbox != box and values[box] == val:
@@ -129,6 +136,11 @@ def display(values):
     return
 
 def eliminate(values):
+    """
+    Removes the digits from peers if already that digit has been assigned to a box in that peer list.
+    Args:
+        the values dictionary to which eliminate strategy to be performed.
+    """
     solved_values = [box for box in values.keys() if len(values[box]) == 1]
     for box in solved_values:
         digit = values[box]
@@ -139,6 +151,12 @@ def eliminate(values):
     return values
 
 def only_choice(values):
+    """
+    Assigns the only possible value to the box if remaining boxes in that unit cannot have it.
+    Args:
+        the values dictionary on which the only_choice strategy to be performed.
+    """
+
     for unit in unitlist:
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
@@ -148,6 +166,12 @@ def only_choice(values):
     return values
 
 def reduce_puzzle(values):
+    """
+    Function to perform all strategies, till solution is found.
+    Args:
+        the values dictionary on which the reduce_puzzle strategy to be performed.
+        returns False if no changes made to underlying puzle [dead end]
+    """
     solved_values = [box for box in values.keys() if len(values[box]) == 1]
     stalled = False
     while not stalled:
@@ -163,6 +187,13 @@ def reduce_puzzle(values):
     return values
 
 def search(values):
+    """
+    A recursive function that starts the search by finding a 2-digit box (or least available digit box)
+     and start Recursive function to perform all strategies, till solution is found.
+    Args:
+        the values dictionary that is either solved or False when no solution found.
+    """
+
     values = reduce_puzzle(values)
     if values is False:
         return False ## Failed earlier
