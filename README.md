@@ -1,13 +1,19 @@
+
+# Aaron caroltin
+# Algorithm to solve any suduko puzzle with diagonal rule
+# Assignment No1 :: AI-ND March 2017
+
 # Artificial Intelligence Nanodegree
 ## Introductory Project: Diagonal Sudoku Solver
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: First, we define a rule (local constraint) within each unit called naked twins. The rule says, if there are exactly two boxes with the same double digit value (say 23) then we eliminate these two digits (2,3) from every other box within the same unit. Once the rule is followed within a single unit, we propagate the same rule to other units till we no longer have any naked twins within entire puzzle [keep going recursivly to find for newly formed NTs and eliminate them as well]
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: We extend the existing row, column, box levels constraint with additional diagonal rule by adding two diagonal units to the existing unitlist.
+This is a top level constraint so every decision we take further down[only choice, eliminate, NT etc] are applied to each of the diagonals into consideration.
 
 ### Install
 
